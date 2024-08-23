@@ -2,8 +2,13 @@ const Inventory = require("../models/inventorySchema");
 
 exports.addItem = async (req, res) => {
   try {
-    const { itemName, quantity, description } = req.body;
-    const newItem = new Inventory({ itemName, quantity, description });
+    const { itemName, quantity, description, category } = req.body;
+    const newItem = new Inventory({
+      itemName,
+      quantity,
+      description,
+      category,
+    });
     await newItem.save();
     res.status(201).json({ message: "Item added to inventory", item: newItem });
   } catch (error) {
@@ -32,6 +37,22 @@ exports.getItemById = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error retrieving item." });
+  }
+};
+
+exports.getItemsByCategory = async (req, res) => {
+  try {
+    const { category } = req.body;
+    const items = await Inventory.find({ category });
+    if (items.length === 0) {
+      return res
+        .status(404)
+        .json({ Message: "No items found in this category" });
+    }
+    res.status(200).json(items);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error retrieving items by category." });
   }
 };
 

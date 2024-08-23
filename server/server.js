@@ -2,8 +2,10 @@ const PORT = process.env.PORT || 5000;
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+
 const userRoutes = require("./routes/userRoutes");
 const inventoryRoutes = require("./routes/inventoryRoutes");
+const transactionRoutes = require("./routes/transactionRoutes");
 require("dotenv").config();
 
 const app = express();
@@ -16,6 +18,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes);
 app.use("/inventory", inventoryRoutes);
+app.use("/transactions", transactionRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

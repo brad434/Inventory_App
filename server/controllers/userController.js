@@ -15,6 +15,7 @@ exports.getAllUsers = async (req, res) => {
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
   const userEmail = email.toLowerCase();
+
   try {
     const existingUser = await User.findOne({ email: userEmail });
     if (existingUser) {

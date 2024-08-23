@@ -4,12 +4,14 @@ const {
   addItem,
   getAllItems,
   getItemById,
+  getItemsByCategory,
   updateItemQuantity,
   deleteItem,
-} = require("../controllers/inventoryController");
+} = require("../controllers/inventoryController.js");
 
 Router.get("/", getAllItems);
 Router.get("/id", getItemById);
+Router.get("/category/:category", getItemsByCategory);
 Router.post("/add", addItem);
 Router.put("/:id/update", updateItemQuantity);
 Router.delete("/:id/delete", deleteItem);
