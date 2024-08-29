@@ -29,12 +29,19 @@ function App() {
     <Router>
       <Navbar isLoggedIn={isLoggedIn} isAdmin={isAdmin} handleLogout={handleLogout} />
       <Routes>
-        <Route path='/' element={<HomePage />} />
+        {/* <Route path='/' element={<HomePage />} />
         <Route path='/inventory' element={isLoggedIn ? <InventoryList /> : <LoginPage />} />
         <Route path='/add' element={isLoggedIn && isAdmin ? <AddItem /> : <LoginPage />} />
         <Route path='/update/:id' element={isLoggedIn ? <UpdateItem /> : <LoginPage />} />
         <Route path='/admin' element={isLoggedIn && isAdmin ? <AdminPage /> : <LoginPage />} />
-        <Route path='/login' element={<LoginPage handleLogin={handleLogin} />} />
+        <Route path='/login' element={<LoginPage handleLogin={handleLogin} />} /> */}
+
+        <Route path="/" element={<HomePage />} />
+        <Route path="/add" element={<AddItem />} />
+        <Route path="/inventory" element={<InventoryList />} />
+        <Route path="/update/:id" element={<UpdateItem />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/login" element={<LoginPage handleLogin={handleLogin} />} />
       </Routes>
     </Router>
   )

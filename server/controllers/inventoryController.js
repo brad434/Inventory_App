@@ -2,10 +2,11 @@ const Inventory = require("../models/inventorySchema");
 
 exports.addItem = async (req, res) => {
   try {
-    const { itemName, quantity, description, category } = req.body;
+    const { itemName, quantity, description, category, image } = req.body;
     const newItem = new Inventory({
       itemName,
       quantity,
+      image,
       description,
       category,
     });
