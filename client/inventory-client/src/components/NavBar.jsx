@@ -12,7 +12,7 @@ const NavBar = ({ isLoggedIn, isAdmin, handleLogout }) => {
 
   return (
     <nav>
-      <Link to="/">Home</Link>
+      {/* <Link to="/">Home</Link>
       {isLoggedIn && <Link to="/inventory">Inventory</Link>}
       {isLoggedIn && <Link to="/add">Add Item</Link>}
       {isLoggedIn && isAdmin && <Link to="/admin">Admin</Link>}
@@ -20,7 +20,14 @@ const NavBar = ({ isLoggedIn, isAdmin, handleLogout }) => {
         <button onClick={handleSignOut}>Sign Out</button>
       ) : (
         <Link to="/login">Login</Link>
-      )}
+      )} */}
+
+      <Link to="/">Home</Link>
+      {<Link to="/inventory">Inventory</Link>}
+      {<Link to="/add">Add Item</Link>}
+      {<Link to="/admin">Admin</Link>}
+      <button onClick={handleSignOut}>Sign Out</button>
+      {<Link to="/login">Login</Link>}
     </nav>
   );
 };
