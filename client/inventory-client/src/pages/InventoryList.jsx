@@ -20,7 +20,7 @@ const InventoryList = () => {
         {items.map((item) => (
           <li key={item._id}>
             <img src={item.image} />
-            {item.itemName} - {item.image} - {item.quantity} - {item.category}
+            {item.itemName} - {item.image} - {item.quantity} - {item.category} - {item.description}
             <Link to={`/update/${item._id}`}>Update</Link>
           </li>
         ))}
