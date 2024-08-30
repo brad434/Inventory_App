@@ -23,9 +23,10 @@ const CategoryComponent = () => {
   return (
     <div>
       <h1>{category} Page</h1>
+      <button onClick={() => window.location.href = '/'}>Back to Home</button>
       <ul>
         {products.map(product => (
-          <li key={product._id}>Name: {product.itemName} - Image: <img src={product.image} /> - Avaiable: {product.quantity}</li>
+          <li key={product._id}>Name: {product.itemName} - Image: <img src={product.image} /> - Available: {product.quantity}</li>
         ))}
       </ul>
     </div>
