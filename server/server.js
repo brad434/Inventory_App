@@ -12,12 +12,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// const categoriesData = {
+//   Computer_Hardware: ["CPU", "GPU", "Motherboard", "RAM"],
+//   Drones: ["DJI Phantom", "Parrot Anafi", "Mavic Mini"],
+//   Science: ["Microscope", "Telescope", "Lab Kit"],
+//   "3D_Printing": ["PLA Filament", "ABS Filament", "3D Printer"],
+//   Marketing: ["SEO Tools", "Marketing Books", "Analytics Software"],
+// };
+
 app.get("/", (req, res) => {
   res.send("Inventory App Backend!");
 });
 
 app.use("/users", userRoutes);
 app.use("/inventory", inventoryRoutes);
+// app.use("/category/:category", inventoryRoutes);
 app.use("/transactions", transactionRoutes);
 
 mongoose

@@ -11,7 +11,7 @@ exports.addItem = async (req, res) => {
       category,
     });
     await newItem.save();
-    res.status(201).json({ message: "Item added to inventory", item: newItem });
+    res.status(200).json({ message: "Item added to inventory", item: newItem });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error adding item to inventory" });
@@ -43,7 +43,7 @@ exports.getItemById = async (req, res) => {
 
 exports.getItemsByCategory = async (req, res) => {
   try {
-    const { category } = req.body;
+    const { category } = req.params;
     const items = await Inventory.find({ category });
     if (items.length === 0) {
       return res
