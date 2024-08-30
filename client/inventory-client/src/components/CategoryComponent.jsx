@@ -25,7 +25,7 @@ const CategoryComponent = () => {
       <h1>{category} Page</h1>
       <ul>
         {products.map(product => (
-          <li key={product._id}>Name: {product.itemName} - Image: {product.image} - Avaiable: {product.quantity}</li>
+          <li key={product._id}>Name: {product.itemName} - Image: <img src={product.image} /> - Avaiable: {product.quantity}</li>
         ))}
       </ul>
     </div>
