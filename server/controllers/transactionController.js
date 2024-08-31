@@ -65,6 +65,7 @@ exports.getUserTransactions = async (req, res) => {
     const transactions = await Transaction.find({
       user: req.params.userId,
     }).populate("item");
+    console.log(transactions);
     res.status(200).json(transactions);
   } catch (error) {
     console.log(error);

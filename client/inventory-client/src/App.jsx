@@ -8,6 +8,7 @@ import UpdateItem from './pages/UpdateItem';
 import AdminPage from './pages/AdminPage';
 import LoginPage from './pages/LoginPage';
 import CategoryComponent from './components/CategoryComponent';
+import Account from './pages/Account'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,6 +35,7 @@ function App() {
         <Route path="/inventory" element={<InventoryList />} />
         <Route path="/inventory/category/:category" element={<CategoryComponent />} />
         <Route path="/update/:id" element={<UpdateItem />} />
+        <Route path="/account" element={<Account />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/login" element={<LoginPage handleLogin={handleLogin} />} />
       </Routes>

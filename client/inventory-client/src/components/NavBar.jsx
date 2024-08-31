@@ -23,10 +23,12 @@ const NavBar = ({ isLoggedIn, isAdmin, handleLogout }) => {
       )} */}
 
       <Link to="/">Home</Link>
-      {<Link to="/inventory">Inventory</Link>}
-      {<Link to="/add">Add Item</Link>}
-      {<Link to="/admin">Admin</Link>}
+      <Link to="/inventory">Inventory</Link>
+      {isLoggedIn && isAdmin ? <Link to="/add">Add Item</Link> : null}
+      {isLoggedIn && isAdmin ? <Link to="/admin">Admin</Link> : null}
+      {isLoggedIn && <Link to='/account'>Account</Link>}
       {<Link to="/login">Login</Link>}
+      {<Link to="/update/:id">Return</Link>}
       <button onClick={handleSignOut}>Sign Out</button>
     </nav>
   );
