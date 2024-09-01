@@ -16,6 +16,7 @@ function App() {
 
   const handleLogin = (user) => {
     setIsLoggedIn(true);
+    setIsAdmin(user.admin);
     if (user.email === 'admin@example.com') {
       setIsAdmin(true);
     }
@@ -32,11 +33,18 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/add" element={<AddItem />} />
-        <Route path="/inventory" element={<InventoryList />} />
+        <Route path="/inventory" element={isLoggedIn ? <InventoryList /> : <LoginPage />} />
+        {isLoggedIn && isAdmin && (
+          <>
+            <Route path='/add' element={<AddItem />} />
+            <Route path='/admin' element={<AdminPage />} />
+          </>
+        )}
         <Route path="/inventory/category/:category" element={<CategoryComponent />} />
-        <Route path="/update/:id" element={<UpdateItem />} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/update/:id" element={isLoggedIn ? <UpdateItem /> : <LoginPage />} />
+        {isLoggedIn ? <Account /> : <LoginPage />}
+        {/* <Route path="/account" element={<Account />} /> */}
+        {/* <Route path="/admin" element={<AdminPage />} /> */}
         <Route path="/login" element={<LoginPage handleLogin={handleLogin} />} />
       </Routes>
     </Router>
