@@ -3,6 +3,34 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET_KEY } = process.env;
 const bcrypt = require("bcrypt");
 
+exports.createUser = async (req, res) => {
+  const { name, email, password, isAdmin } = req.body;
+  const userEmail = email.toLowerCase();
+  try {
+    const existingUser = await User.findOne({ email: userEmail });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists." });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      email: userEmail,
+      password: hashedPassword,
+      name,
+      admin: isAdmin || false,
+    });
+
+    await newUser.save();
+    res
+      .status(201)
+      .json({ message: "User created successfully", user: newUser });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error creating user." });
+  }
+};
+
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});
@@ -13,7 +41,7 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, isAdmin } = req.body;
   const userEmail = email.toLowerCase();
 
   try {
@@ -28,9 +56,12 @@ exports.register = async (req, res) => {
       name,
       email: userEmail,
       password: hashedPassword,
+      admin: isAdmin || false,
     });
     await newUser.save();
-    res.status(201).json({ message: "User registered successfully" });
+    res
+      .status(201)
+      .json({ message: "User registered successfully", user: newUser });
   } catch (error) {
     console.log(error);
   }

@@ -17,7 +17,7 @@ const AddItem = () => {
 
     try {
       const response = await axios.post('http://localhost:5000/inventory/add', newItem);
-      if (response.status === 201) {
+      if (response.status) {
         alert('Item added successfully!');
         navigate('/inventory')
       }

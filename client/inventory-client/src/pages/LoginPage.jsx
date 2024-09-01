@@ -30,27 +30,32 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function SignIn({ handleLogin }) { //Pass handleLogin as a prop
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios({
-        method: 'post',
-        url: 'http://localhost:5000/users/login',
-        data: {
-          email,
-          password,
-        }
-      });
+      const response = await axios.post('http://localhost:5000/users/login', { email, password });
+
+      const { user, token } = response.data; //Extract user and token from the response
+      console.log("check here", response.data.token)
+
+      //store token in local storage for persistent sessions
+      localStorage.setItem('authToken', token);
+
+      //call handleLogin to update parent component's state
+      handleLogin(user);
+
       alert("Signed in");
       navigate('/inventory');
 
     } catch (error) {
-      console.log(error)
+      console.error('Login failed:', error);
+      setError('Invalid email or password'); // set error message for user feedback
     }
   };
 

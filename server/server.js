@@ -9,7 +9,12 @@ const transactionRoutes = require("./routes/transactionRoutes");
 require("dotenv").config();
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend URL
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // const categoriesData = {
