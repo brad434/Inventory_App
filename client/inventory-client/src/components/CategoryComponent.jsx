@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
 
 const CategoryComponent = () => {
   const { category } = useParams();
   const [products, setProducts] = useState([]);
-
-  console.log(category);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,19 +15,29 @@ const CategoryComponent = () => {
       } catch (error) {
         console.error(error);
       }
-    }
+    };
     fetchData();
   }, [category]);
 
   return (
-    <div>
-      <h1>{category} Page</h1>
-      <button onClick={() => window.location.href = '/'}>Back to Home</button>
-      <ul>
+    <div className="container mt-5">
+      <h1 className="text-center mb-4">{category} Items</h1>
+      <div className="text-center mb-4">
+        <button className="btn btn-primary" onClick={() => window.location.href = '/'}>Back to Home</button>
+      </div>
+      <div className="row">
         {products.map(product => (
-          <li key={product._id}>Name: {product.itemName} - Image: <img src={product.image} /> - Available: {product.quantity}</li>
+          <div className="col-md-4 mb-4" key={product._id}>
+            <div className="card h-100">
+              <img src={product.image} className="card-img-top" alt={product.itemName} style={{ objectFit: 'cover', height: '200px' }} />
+              <div className="card-body">
+                <h5 className="card-title">{product.itemName}</h5>
+                <p className="card-text">Available: {product.quantity}</p>
+              </div>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
