@@ -47,7 +47,7 @@ function App() {
       <Navbar isLoggedIn={isLoggedIn} isAdmin={isAdmin} handleLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/inventory" element={<InventoryList />} />
+        <Route path="/inventory" element={<InventoryList isLoggedIn={isLoggedIn} />} />
         {isLoggedIn && isAdmin && (
           <>
             <Route path='/add' element={<AddItem />} />
