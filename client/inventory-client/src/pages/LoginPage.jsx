@@ -19,8 +19,8 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Webs
+      <Link color="inherit" href="https://www.mmentors.org">
+        Morrison Mentors
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -30,10 +30,9 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn({ handleLogin }) { //Pass handleLogin as a prop
+export default function SignIn({ setIsLoggedIn }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -41,21 +40,18 @@ export default function SignIn({ handleLogin }) { //Pass handleLogin as a prop
     try {
       const response = await axios.post('http://localhost:5000/users/login', { email, password });
 
-      const { user, token } = response.data; //Extract user and token from the response
-      console.log("check here", response.data.token)
-
-      //store token in local storage for persistent sessions
-      localStorage.setItem('authToken', token);
-
-      //call handleLogin to update parent component's state
-      handleLogin(user);
-
-      alert("Signed in");
-      navigate('/inventory');
-
+      if (response.status === 200) {
+        const data = response.data;
+        localStorage.setItem('token', data.token);
+        setIsLoggedIn(true);
+        alert(data.message)
+        navigate('/account')
+      } else {
+        console.error('Login Failed');
+        alert("Username or Password is incorrect")
+      }
     } catch (error) {
       console.error('Login failed:', error);
-      setError('Invalid email or password'); // set error message for user feedback
     }
   };
 
@@ -112,18 +108,7 @@ export default function SignIn({ handleLogin }) { //Pass handleLogin as a prop
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
+
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
