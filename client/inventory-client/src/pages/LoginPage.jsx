@@ -30,21 +30,30 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn({ setIsLoggedIn }) {
+export default function SignIn({ setIsLoggedIn, setUser }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(''); // New state for handling errors
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!email || !password) { //check for empty fields
+      setError('Please enter both email and password');
+      return;
+    }
+
     try {
       const response = await axios.post('http://localhost:5000/users/login', { email, password });
 
       if (response.status === 200) {
-        const data = response.data;
-        localStorage.setItem('token', data.token);
+        const { token, user } = response.data;
+        localStorage.setItem('token', token);
         setIsLoggedIn(true);
-        alert(data.message)
+        setUser(user);
+        alert(response.data.message)
+        // console.log(data, response.data.token)
         navigate('/account')
       } else {
         console.error('Login Failed');
@@ -73,6 +82,7 @@ export default function SignIn({ setIsLoggedIn }) {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {error && <Typography color="error">{error}</Typography>}
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
@@ -84,6 +94,7 @@ export default function SignIn({ setIsLoggedIn }) {
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
               autoFocus
+              value={email} // Bind value to state
             />
             <TextField
               margin="normal"
@@ -95,6 +106,7 @@ export default function SignIn({ setIsLoggedIn }) {
               id="password"
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
+              value={password} // Bind value to state
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -108,7 +120,6 @@ export default function SignIn({ setIsLoggedIn }) {
             >
               Sign In
             </Button>
-
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

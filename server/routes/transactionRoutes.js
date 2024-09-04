@@ -5,11 +5,12 @@ const {
   returnItem,
   getUserTransactions,
 } = require("../controllers/transactionController");
+const { authenticateToken } = require("../middleware/authMiddleware");
 
-router.post("/checkout", checkoutItem);
+router.post("/checkout", authenticateToken, checkoutItem);
 
-router.post("/return/:id", returnItem);
+router.post("/return/:id", authenticateToken, returnItem);
 
-router.get("/user/:userId", getUserTransactions);
+router.get("/user/:userId", authenticateToken, getUserTransactions);
 
 module.exports = router;

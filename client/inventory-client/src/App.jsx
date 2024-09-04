@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './components/NavBar';
 import HomePage from './pages/HomePage';
 import AddItem from './pages/AddItem';
@@ -8,39 +8,41 @@ import UpdateItem from './pages/UpdateItem';
 import AdminPage from './pages/AdminPage';
 import LoginPage from './pages/LoginPage';
 import CategoryComponent from './components/CategoryComponent';
-import Account from './pages/Account'
+import Account from './pages/Account';
+import { jwtDecode } from 'jwt-decode'; // Use correct import
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [isLoggedIn, setIsLoggedIn] = useState(!!token);
+  const [user, setUser] = useState(null); // Store full user details here
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    //When token changes, set isLoggedIn state
+    setIsLoggedIn(!!token);
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('authToken');
-  //   const adminStatus = localStorage.getItem('isAdmin') === 'true';
-  //   if (token) {
-  //     setIsLoggedIn(true);
-  //     setIsAdmin(adminStatus);
-  //   }
-  // }, [])
-
-  // const handleLogin = (user) => {
-  //   setIsLoggedIn(true);
-  //   setIsAdmin(user.admin || false);
-  //   localStorage.setItem('authToken', user.token); // stores the token in local storage
-  //   localStorage.setItem('isAdmin', user.admin);  //stores admin status in local storage
-  // }
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUser({ id: decodedToken.id, email: decodedToken.email, isAdmin: decodedToken.isAdmin });
+        setIsAdmin(decodedToken.isAdmin);
+        // setIsLoggedIn(true);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        handleLogout();
+      }
+    }
+  }, [token]);
 
   const handleLogout = () => {
     setToken(null);
     setIsLoggedIn(false);
     setIsAdmin(false);
-    localStorage.removeItem('authToken'); // removes token from local storage
-    localStorage.removeItem('isAdmin'); // removes admin status from local storage
+    setUser(null);
+    localStorage.removeItem('token');
     navigate('/');
-  }
+  };
 
   return (
     <>
@@ -56,13 +58,11 @@ function App() {
         )}
         <Route path="/inventory/category/:category" element={<CategoryComponent />} />
         <Route path="/update/:id" element={isLoggedIn ? <UpdateItem /> : <LoginPage />} />
-        <Route path='/account' element={isLoggedIn ? <Account /> : <LoginPage />} />
-        <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
-        {/* <Route path="/account" element={<Account />} /> */}
-        {/* <Route path="/admin" element={<AdminPage />} /> */}
+        <Route path='/account' element={isLoggedIn ? <Account user={user} /> : <LoginPage />} />
+        <Route path="/login" element={<LoginPage setUser={setUser} setIsLoggedIn={setIsLoggedIn} />} />
       </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
