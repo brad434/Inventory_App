@@ -41,7 +41,7 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.register = async (req, res) => {
-  const { name, email, password, isAdmin } = req.body;
+  const { name, email, password, admin } = req.body;
   const userEmail = email.toLowerCase();
 
   try {
@@ -56,7 +56,7 @@ exports.register = async (req, res) => {
       name,
       email: userEmail,
       password: hashedPassword,
-      admin: isAdmin || false,
+      admin: admin || false,
     });
     await newUser.save();
     res
@@ -86,7 +86,7 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, email: user.email },
+      { id: user._id, email: user.email, isAdmin: user.admin },
       process.env.JWT_SECRET_KEY,
       {
         expiresIn: "7d",

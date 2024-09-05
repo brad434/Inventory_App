@@ -9,17 +9,16 @@ import AdminPage from './pages/AdminPage';
 import LoginPage from './pages/LoginPage';
 import CategoryComponent from './components/CategoryComponent';
 import Account from './pages/Account';
-import { jwtDecode } from 'jwt-decode'; // Use correct import
+import { jwtDecode } from 'jwt-decode';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [isLoggedIn, setIsLoggedIn] = useState(!!token);
-  const [user, setUser] = useState(null); // Store full user details here
+  const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    //When token changes, set isLoggedIn state
     setIsLoggedIn(!!token);
 
     if (token) {
@@ -27,13 +26,14 @@ function App() {
         const decodedToken = jwtDecode(token);
         setUser({ id: decodedToken.id, email: decodedToken.email, isAdmin: decodedToken.isAdmin });
         setIsAdmin(decodedToken.isAdmin);
-        // setIsLoggedIn(true);
       } catch (error) {
         console.error("Error decoding token:", error);
         handleLogout();
       }
     }
   }, [token]);
+
+
 
   const handleLogout = () => {
     setToken(null);
@@ -49,7 +49,7 @@ function App() {
       <Navbar isLoggedIn={isLoggedIn} isAdmin={isAdmin} handleLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/inventory" element={<InventoryList isLoggedIn={isLoggedIn} />} />
+        <Route path="/inventory" element={<InventoryList user={user} isLoggedIn={isLoggedIn} />} />
         {isLoggedIn && isAdmin && (
           <>
             <Route path='/add' element={<AddItem />} />

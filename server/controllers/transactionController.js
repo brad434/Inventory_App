@@ -85,7 +85,8 @@ exports.checkoutItem = async (req, res) => {
 
 exports.returnItem = async (req, res) => {
   try {
-    const { transaction } = await Transaction.findById(req.params.id);
+    const transaction = await Transaction.findById(req.params.id);
+
     if (!transaction || transaction.status === "Returned") {
       return res.status(400).json({ message: "Invalid transaction" });
     }
