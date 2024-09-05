@@ -13,7 +13,6 @@ const AdminPage = () => {
   const handleCreateUser = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('authToken');
-    console.log('Token', token)
 
     if (!token) {
       setMessage("Authentication token is missing. Please log in again.");
@@ -32,7 +31,6 @@ const AdminPage = () => {
       })
 
       setMessage(response.data.message);
-      console.log(response.data.message);
 
       setName('');
       setEmail('');

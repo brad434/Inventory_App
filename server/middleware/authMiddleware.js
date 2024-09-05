@@ -3,7 +3,6 @@ const User = require("../models/userSchema");
 
 const authenticateToken = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
-  console.log("Received Token", token); //debugging line
 
   if (!token) {
     return res
@@ -12,10 +11,7 @@ const authenticateToken = (req, res, next) => {
   }
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
-    console.log("Decoded Data:", decoded); //debugging line
-
     if (err) {
-      console.log("Token verification error:", error); //debugging line
       return res.status(403).json({ message: "Invalid token." });
     }
 
@@ -27,7 +23,6 @@ const authenticateToken = (req, res, next) => {
       req.user = user; // attach user to request object
       next();
     } catch (error) {
-      console.log("Error finding user:", error); //debugging line
       res.status(500).json({ message: "Failed to authenticate user." });
     }
   });

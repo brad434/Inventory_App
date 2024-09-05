@@ -122,7 +122,10 @@ const InventoryList = ({ isLoggedIn, user }) => {
                     </div>
                     <button
                       className="btn btn-success"
-                      onClick={() => handleCheckout(item._id, user ? user._id : null, checkoutQuantity[item._id] || 0)} // Use user.id here
+                      onClick={() => {
+                        handleCheckout(item._id, user ? user.id : null, checkoutQuantity[item._id] || 0);
+                      }
+                      } // Use user.id here
                       disabled={!checkoutQuantity[item._id] || checkoutQuantity[item._id] > item.quantity}
                     >
                       Checkout
@@ -143,7 +146,7 @@ const InventoryList = ({ isLoggedIn, user }) => {
           </div>
         ))}
       </div>
-    </div>
+    </div >
   );
 };
 

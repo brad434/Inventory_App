@@ -43,7 +43,7 @@ const Account = ({ user }) => {
 
       setCart(prevCart => prevCart.filter(transaction => transaction._id !== transactionId));
       setSuccessMessage('Item successfully returned!');
-      setTimeout(() => setSuccessMessage(''), 3000);
+      // setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
       console.error('Error returning item:', error);
       setError('Failed to return item. Please try again.');

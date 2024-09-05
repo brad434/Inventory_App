@@ -53,7 +53,6 @@ export default function SignIn({ setIsLoggedIn, setUser }) {
         setIsLoggedIn(true);
         setUser(user);
         alert(response.data.message)
-        // console.log(data, response.data.token)
         navigate('/account')
       } else {
         console.error('Login Failed');
