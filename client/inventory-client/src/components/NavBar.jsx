@@ -41,9 +41,6 @@ const NavBar = ({ isLoggedIn, isAdmin, handleLogout }) => {
                   <Link className="nav-link" to='/account'>Account</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/update/:id">Return</Link>
-                </li>
-                <li className="nav-item">
                   <button className="btn btn-outline-light ms-2" onClick={handleSignOut}>Log Out</button>
                 </li>
               </>
