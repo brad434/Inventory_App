@@ -53,7 +53,6 @@ const Account = ({ user }) => {
   return (
     <Container className="mt-5">
       <h2 className="text-center">Account Page</h2>
-
       {error && <Alert variant="danger">{error}</Alert>}
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
 
