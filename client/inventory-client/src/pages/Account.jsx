@@ -59,8 +59,8 @@ const Account = ({ user }) => {
 
       {user ? (
         <>
-          <h3>Welcome, {user.email}</h3>
-          <h5>Your Cart (Checked-Out Items):</h5>
+          <h3 className='text-center'>Welcome, {user.email}</h3>
+          <h5 className='text-center'>Your Cart (Checked-Out Items):</h5>
           {cart.length > 0 ? (
             <ListGroup>
               {cart.map(transaction => (
