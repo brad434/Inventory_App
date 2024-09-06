@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
 
 const AddItem = () => {
   const [itemName, setItemName] = useState('');
@@ -9,19 +9,18 @@ const AddItem = () => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [items, setItems] = useState([]);
-  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/inventory')
+        const response = await axios.get('http://localhost:5000/inventory');
         setItems(response.data);
       } catch (error) {
-        console.error(error)
+        console.error('Error fetching items:', error);
       }
-    }
+    };
     fetchItems();
-  }, [])
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +30,7 @@ const AddItem = () => {
       const response = await axios.post('http://localhost:5000/inventory/add', newItem);
       if (response.status === 201) {
         alert('Item added successfully!');
-        setItems([...items, response.data]); //add the new item to the state
+        setItems([...items, response.data]); // Add the new item to the state
         setItemName('');
         setQuantity('');
         setImage('');
@@ -44,29 +43,78 @@ const AddItem = () => {
   };
 
   return (
-    <div>
-      <h2>Add New Item</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} placeholder="Item Name" required />
-        <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="Quantity" required />
-        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
-        <input type="text" value={image} onChange={(e) => setImage(e.target.value)} placeholder="Image Link" />
-        <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" required />
-        <button type="submit">Add Item</button>
+    <div className="container mt-4">
+      <h2 className="mb-4">Add New Item</h2>
+      <form onSubmit={handleSubmit} className="mb-5">
+        <div className="form-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            value={itemName}
+            onChange={(e) => setItemName(e.target.value)}
+            placeholder="Item Name"
+            required
+          />
+        </div>
+        <div className="form-group mb-3">
+          <input
+            type="number"
+            className="form-control"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            placeholder="Quantity"
+            required
+          />
+        </div>
+        <div className="form-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description"
+          />
+        </div>
+        <div className="form-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+            placeholder="Image Link"
+          />
+        </div>
+        <div className="form-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            placeholder="Category"
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">Add Item</button>
       </form>
 
       <h3>Current Items</h3>
-      <ul>
-        {items.map(item => (
-          <li>
-            <img src={item.image} alt={item.itemName} height='50' width='50' />
-            <p><b>Name:</b> {item.itemName}</p>
-            <p><b>Quantity:</b> {item.quantity}</p>
-            <p><b>Description:</b> {item.description}</p>
-            <p><b>Category:</b> {item.category}</p>
-          </li>
+      <div className="row">
+        {items.map((item) => (
+          <div key={item._id} className="col-md-4 mb-4">
+            <div className="card">
+              {item.image && (
+                <img src={item.image} className="card-img-top" alt={item.itemName} style={{ height: '200px', objectFit: 'cover' }} />
+              )}
+              <div className="card-body">
+                <h5 className="card-title">{item.itemName}</h5>
+                <p className="card-text"><b>Quantity:</b> {item.quantity}</p>
+                <p className="card-text"><b>Description:</b> {item.description}</p>
+                <p className="card-text"><b>Category:</b> {item.category}</p>
+              </div>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
