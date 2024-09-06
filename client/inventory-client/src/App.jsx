@@ -56,7 +56,7 @@ function App() {
             <Route path='/admin' element={<AdminPage />} />
           </>
         )}
-        <Route path="/inventory/category/:category" element={<CategoryComponent />} />
+        <Route path="/inventory/category/:category" element={<CategoryComponent isLoggedIn={isLoggedIn} user={user} />} />
         <Route path="/update/:id" element={isLoggedIn ? <UpdateItem /> : <LoginPage />} />
         <Route path='/account' element={isLoggedIn ? <Account user={user} /> : <LoginPage />} />
         <Route path="/login" element={<LoginPage setUser={setUser} setIsLoggedIn={setIsLoggedIn} />} />
