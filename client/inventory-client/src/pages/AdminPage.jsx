@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 
@@ -15,6 +15,17 @@ const AdminPage = () => {
   const [showTransactions, setShowTransactions] = useState(false);
   const [transactionUserName, setTransactionUserName] = useState('');
   const navigate = useNavigate();
+
+  // Refs for scrolling to different sections
+  const createUserSectionRef = useRef(null);
+  const staffUsersSectionRef = useRef(null);
+  const transactionsSectionRef = useRef(null);
+
+  const scrollToSection = (ref) => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -40,6 +51,12 @@ const AdminPage = () => {
 
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    if (showTransactions) {
+      scrollToSection(transactionsSectionRef)
+    }
+  }, [showTransactions]);
 
   const handleCreateUser = async (e) => {
     e.preventDefault();
@@ -147,7 +164,7 @@ const AdminPage = () => {
 
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        await axios.delete(`http://localhost:5000/users/${userId}`, {
+        await axios.delete(`http://localhost:5000/users/delete/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -183,6 +200,9 @@ const AdminPage = () => {
       const user = users.find((u) => u._id === userId);
       setTransactionUserName(user ? user.name : '');
       setShowTransactions(true);
+
+      // Scroll to the transactions section after fetching
+      scrollToSection(transactionsSectionRef);
     } catch (error) {
       console.error('Error fetching transactions:', error);
       setMessage('Failed to fetch transactions.');
@@ -190,53 +210,118 @@ const AdminPage = () => {
   }
 
   return (
-    <div>
-      <h1>Admin Dashboard - Create User</h1>
-      <form onSubmit={editMode ? handleUpdateUser : handleCreateUser}>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-        <label>
-          <input type="checkbox" checked={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)} />
-          Admin?
-        </label>
-        <button type="submit">{editMode ? 'Update User' : 'Create User'}</button>
-        {editMode && <button onClick={handleCancelEdit}>Cancel</button>}
-      </form>
-      {message && <p>{message}</p>}
+    <div className="container mt-5">
+      {/* Buttons to scroll to different sections */}
+      <div className="d-flex justify-content-center mb-4">
+        <button className="btn btn-outline-primary me-3" onClick={() => scrollToSection(createUserSectionRef)}>
+          Go to Create User
+        </button>
+        <button className="btn btn-outline-primary" onClick={() => scrollToSection(staffUsersSectionRef)}>
+          Go to Staff Users
+        </button>
+      </div>
 
+      {/* Create User Section */}
+      <div ref={createUserSectionRef}>
+        <h1 className="mb-4 text-center">{editMode ? 'Edit User' : 'Create User'}</h1>
+        <form className="mb-5" onSubmit={editMode ? handleUpdateUser : handleCreateUser}>
+          <div className="mb-3">
+            <label className="form-label">Name</label>
+            <input
+              type="text"
+              className="form-control"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter Name"
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <input
+              type="email"
+              className="form-control"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter Email"
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={editMode ? 'New Password (optional)' : 'Enter Password'}
+              required={!editMode}
+            />
+          </div>
+          <div className="form-check mb-3">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              checked={isAdmin}
+              onChange={(e) => setIsAdmin(e.target.checked)}
+            />
+            <label className="form-check-label">Admin?</label>
+          </div>
+          <button type="submit" className="btn btn-primary">
+            {editMode ? 'Update User' : 'Create User'}
+          </button>
+          {editMode && (
+            <button type="button" className="btn btn-secondary ms-3" onClick={handleCancelEdit}>
+              Cancel
+            </button>
+          )}
+        </form>
+      </div>
+      {message && <div className="alert alert-info">{message}</div>}
 
-      <h2>Staff Users</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Admin</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user._id}>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.admin ? 'Yes' : 'No'}</td>
-              <td>
-                <button onClick={() => handleEditUser(user)}>Edit</button>
-                <button onClick={() => handleDeleteUser(user._id)}>Delete</button>
-                <button onClick={() => handleViewTransactions(user._id)}>View Transactions</button>
-              </td>
+      {/* Staff Users Section */}
+      <div ref={staffUsersSectionRef}>
+        <h2 className="mb-4">Staff Users</h2>
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Admin</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user._id}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.admin ? 'Yes' : 'No'}</td>
+                <td>
+                  <button className="btn btn-warning me-2" onClick={() => handleEditUser(user)}>
+                    Edit
+                  </button>
+                  <button className="btn btn-danger me-2" onClick={() => handleDeleteUser(user._id)}>
+                    Delete
+                  </button>
+                  <button className="btn btn-info" onClick={() => handleViewTransactions(user._id)}>
+                    View Transactions
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
+      {/* Transactions Section */}
       {showTransactions && (
-        <div>
-          <h3>Transaction History for {transactionUserName}</h3>
-          <button onClick={() => setShowTransactions(false)}>Close</button>
-          <table>
+        <div ref={transactionsSectionRef} className="mt-5">
+          <h3 className="mb-4">Transaction History for {transactionUserName}</h3>
+          <button className="btn btn-secondary mb-3" onClick={() => setShowTransactions(false)}>
+            Close Transactions
+          </button>
+          <table className="table table-striped table-bordered">
             <thead>
               <tr>
                 <th>Item Name</th>
@@ -250,7 +335,11 @@ const AdminPage = () => {
                 <tr key={transaction._id}>
                   <td>{transaction.item.itemName}</td>
                   <td>{new Date(transaction.takenAt).toLocaleString()}</td>
-                  <td>{transaction.returnedAt ? new Date(transaction.returnedAt).toLocaleString() : 'Not Returned'}</td>
+                  <td>
+                    {transaction.returnedAt
+                      ? new Date(transaction.returnedAt).toLocaleString()
+                      : 'Not Returned'}
+                  </td>
                   <td>{transaction.status}</td>
                 </tr>
               ))}
@@ -258,9 +347,8 @@ const AdminPage = () => {
           </table>
         </div>
       )}
-
     </div>
-  )
+  );
 }
 
 export default AdminPage
