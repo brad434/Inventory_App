@@ -65,8 +65,8 @@ const Account = ({ user }) => {
               {cart.map(transaction => (
                 <ListGroup.Item key={transaction._id} className="d-flex justify-content-between align-items-center">
                   <div>
-                    <strong>Item:</strong> {transaction.item.itemName} <br />
-                    <strong>Category:</strong> {transaction.item.category} <br />
+                    <strong>Item:</strong> {transaction.item?.itemName || 'Item not found.'} <br />
+                    <strong>Category:</strong> {transaction.item?.category || 'Item not found.'} <br />
                     <strong>Taken At:</strong> {new Date(transaction.takenAt).toLocaleString()}
                   </div>
                   <Button

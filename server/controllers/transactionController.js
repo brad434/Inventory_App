@@ -55,8 +55,10 @@ exports.returnItem = async (req, res) => {
     await transaction.save();
 
     const item = await Inventory.findById(transaction.item);
-    item.quantity += transaction.quantity;
-    await item.save();
+    if (item) {
+      item.quantity += transaction.quantity;
+      await item.save();
+    }
 
     res.status(200).json({ message: "Item returned", transaction });
   } catch (error) {
