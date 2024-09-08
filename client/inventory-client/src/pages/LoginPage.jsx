@@ -54,6 +54,7 @@ export default function SignIn({ setIsLoggedIn, setUser }) {
         setUser(user);
         alert(response.data.message)
         navigate('/account')
+        window.location.reload();
       } else {
         console.error('Login Failed');
         alert("Username or Password is incorrect")

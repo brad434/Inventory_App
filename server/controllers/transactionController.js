@@ -3,7 +3,7 @@ const Inventory = require("../models/inventorySchema");
 
 exports.checkoutItem = async (req, res) => {
   try {
-    const { itemId, quantity } = req.body;
+    const { itemId, quantity, category } = req.body;
     const userId = req.user._id; // Use the user object from req.user
 
     // Find the item in the inventory
@@ -25,6 +25,7 @@ exports.checkoutItem = async (req, res) => {
       user: userId,
       quantity,
       status: "Taken",
+      category,
     });
     await transaction.save();
 
@@ -54,7 +55,7 @@ exports.returnItem = async (req, res) => {
     await transaction.save();
 
     const item = await Inventory.findById(transaction.item);
-    item.quantity += 1;
+    item.quantity += transaction.quantity;
     await item.save();
 
     res.status(200).json({ message: "Item returned", transaction });

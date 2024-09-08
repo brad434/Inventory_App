@@ -23,7 +23,7 @@ const Account = ({ user }) => {
         setCart(cartItems);
       } catch (error) {
         console.error('Error fetching user transactions:', error);
-        setError('Failed to load transactions. Please try again.');
+        setError('Failed to load transactions. Please try adding items to your cart.');
       }
     };
 
@@ -53,13 +53,13 @@ const Account = ({ user }) => {
   return (
     <Container className="mt-5">
       <h2 className="text-center">Account Page</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
 
       {user ? (
         <>
           <h3 className='text-center'>Welcome, {user.email}</h3>
           <h5 className='text-center'>Your Cart (Checked-Out Items):</h5>
+          {error && <Alert variant="danger">{error}</Alert>}
           {cart.length > 0 ? (
             <ListGroup>
               {cart.map(transaction => (
