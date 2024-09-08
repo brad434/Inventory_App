@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Container, TextField, Button, Typography, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -10,10 +11,41 @@ import PrintIcon from '@mui/icons-material/Print';
 import MarketingIcon from '@mui/icons-material/Campaign';
 
 const SearchAppBar = () => {
+  const [items, setItems] = useState([]);  // State to hold all items
+  const [filteredItems, setFilteredItems] = useState([]); // State to hold filtered items
+  const [searchQuery, setSearchQuery] = useState(''); // State for the search input
+
   const navigate = useNavigate();
 
   const handleCategoryClick = (category) => {
     navigate(`/inventory/category/${category}`); // Navigate to the selected category
+  };
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/inventory'); // Fetch inventory items
+        setItems(response.data);
+      } catch (error) {
+        console.error('Error fetching inventory items:', error);
+      }
+    };
+    fetchItems();
+  }, []);
+
+  // Function to handle search input change
+  const handleSearch = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+
+    if (query === '') {
+      setFilteredItems([]);
+    } else {
+      const filtered = items.filter(item =>
+        item.itemName.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredItems(filtered);
+    }
   };
 
   return (
@@ -38,12 +70,42 @@ const SearchAppBar = () => {
             variant="outlined"
             placeholder="Search for items..."
             fullWidth
+            value={searchQuery}
+            onChange={handleSearch}
             sx={{ mr: 2 }}
           />
           <Button variant="contained" color="primary" startIcon={<SearchIcon />}>
             Search
           </Button>
         </Box>
+
+        {/* Display Filtered Items */}
+        {searchQuery && (
+          <div className="row">
+            {filteredItems.length > 0 ? (
+              filteredItems.map(item => (
+                <div className="col-md-4 mb-4" key={item._id}>
+                  <div className="card h-100">
+                    <img src={item.image} className="card-img-top" alt={item.itemName} style={{ objectFit: 'cover', height: '200px' }} />
+                    <div className="card-body">
+                      <h5 className="card-title">{item.itemName}</h5>
+                      <p className="card-text">
+                        <strong>Quantity:</strong> {item.quantity}
+                      </p>
+                      <p className="card-text">
+                        <strong>Category:</strong> {item.category}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <Typography variant="body1" color="textSecondary">
+                No items found.
+              </Typography>
+            )}
+          </div>
+        )}
 
         {/* Categories */}
         <Grid container spacing={3}>
