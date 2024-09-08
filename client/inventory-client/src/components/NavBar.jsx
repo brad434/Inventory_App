@@ -20,25 +20,25 @@ const NavBar = ({ isLoggedIn, isAdmin, handleLogout }) => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <Link className="nav-link" to="/">Home</Link>
+              <Link className="nav-link" to="/">- Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/inventory">Inventory</Link>
+              <Link className="nav-link" to="/inventory">- Inventory</Link>
             </li>
             {isLoggedIn && isAdmin && (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/add">Add Item</Link>
+                  <Link className="nav-link" to="/add">- Create Item</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/admin">Admin</Link>
+                  <Link className="nav-link" to="/admin">- Admin Dashboard</Link>
                 </li>
               </>
             )}
             {isLoggedIn && (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to='/account'>Account</Link>
+                  <Link className="nav-link" to='/account'>- Account</Link>
                 </li>
                 <li className="nav-item">
                   <button className="btn btn-outline-light ms-2" onClick={handleSignOut}>Log Out</button>

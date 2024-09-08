@@ -19,6 +19,6 @@ Router.get("/category/:category", getItemsByCategory);
 
 Router.post("/add", authenticateToken, requireAdmin, addItem);
 Router.put("/:id/update", authenticateToken, requireAdmin, updateItemQuantity);
-Router.delete("/:id/delete", authenticateToken, requireAdmin, deleteItem);
+Router.delete("/:id", authenticateToken, requireAdmin, deleteItem);
 
 module.exports = Router;
