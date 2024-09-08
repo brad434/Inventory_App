@@ -24,6 +24,7 @@ const InventoryList = ({ isLoggedIn, user }) => {
       alert("User not authenticated. Please log in.")
       return;
     }
+    console.log("Category:", category);
 
     try {
       const token = localStorage.getItem('token');
@@ -145,7 +146,7 @@ const InventoryList = ({ isLoggedIn, user }) => {
                     <div className="d-flex justify-content-between">
                       <button
                         className="btn btn-success"
-                        onClick={() => handleCheckout(item._id, user ? user.id : null, checkoutQuantity[item._id] || 0)}
+                        onClick={() => handleCheckout(item._id, user ? user.id : null, checkoutQuantity[item._id] || 0, item.category)}
                         disabled={!checkoutQuantity[item._id] || checkoutQuantity[item._id] > item.quantity}
                       >
                         Checkout
