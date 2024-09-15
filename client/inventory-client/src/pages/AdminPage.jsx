@@ -325,15 +325,20 @@ const AdminPage = () => {
             <thead>
               <tr>
                 <th>Item Name</th>
+                <th>Quantity</th>
                 <th>Taken At</th>
                 <th>Returned At</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
+              {console.log("Transaction for adminPage", transactions)}
               {transactions.map((transaction) => (
                 <tr key={transaction._id}>
-                  <td>{transaction.item.itemName}</td>
+                  {console.log("Transaction for adminPage", transaction)}
+                  {/* {console.log(transaction)} */}
+                  <td>{transaction.item ? transaction.item.itemName : 'Item not found'}</td>
+                  <td>{transaction.item ? transaction.item.quantity : 'Item not found'}</td>
                   <td>{new Date(transaction.takenAt).toLocaleString()}</td>
                   <td>
                     {transaction.returnedAt

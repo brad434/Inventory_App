@@ -25,9 +25,17 @@ const AddItem = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newItem = { itemName, quantity, image, description, category };
+    console.log("AddItem jsx file testing newItem", newItem)
 
     try {
-      const response = await axios.post('http://localhost:5000/inventory/add', newItem);
+      const token = localStorage.getItem('token');
+
+
+      const response = await axios.post('http://localhost:5000/inventory/add', newItem, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.status === 201) {
         alert('Item added successfully!');
         setItems([...items, response.data]); // Add the new item to the state

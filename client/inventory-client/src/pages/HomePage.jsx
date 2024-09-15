@@ -95,6 +95,7 @@ const SearchAppBar = () => {
                       <p className="card-text">
                         <strong>Category:</strong> {item.category}
                       </p>
+                      <button className='btn btn-primary'>Checkout</button>
                     </div>
                   </div>
                 </div>

@@ -144,9 +144,13 @@ const InventoryList = ({ isLoggedIn, user }) => {
                       </button>
                     </div>
                     <div className="d-flex justify-content-between">
+
                       <button
                         className="btn btn-success"
-                        onClick={() => handleCheckout(item._id, user ? user.id : null, checkoutQuantity[item._id] || 0, item.category)}
+                        onClick={() => {
+                          console.log("Looking at console.log", item)
+                          handleCheckout(item._id, user ? user.id : null, checkoutQuantity[item._id] || 0, item.category)
+                        }}
                         disabled={!checkoutQuantity[item._id] || checkoutQuantity[item._id] > item.quantity}
                       >
                         Checkout

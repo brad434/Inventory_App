@@ -21,7 +21,7 @@ exports.checkoutItem = async (req, res) => {
 
     // Create a new transaction with the specified quantity
     const transaction = new Transaction({
-      item: itemId,
+      item,
       user: userId,
       quantity,
       status: "Taken",
@@ -55,10 +55,12 @@ exports.returnItem = async (req, res) => {
     await transaction.save();
 
     const item = await Inventory.findById(transaction.item);
-    if (item) {
-      item.quantity += transaction.quantity;
-      await item.save();
-    }
+    // if (item) {
+    //   item.quantity += transaction.quantity;
+    //   await item.save();
+    // }
+    item.quantity += 1;
+    await item.save();
 
     res.status(200).json({ message: "Item returned", transaction });
   } catch (error) {
