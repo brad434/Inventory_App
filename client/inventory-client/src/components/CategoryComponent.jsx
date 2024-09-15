@@ -16,14 +16,18 @@ const CategoryComponent = ({ isLoggedIn, user }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/inventory/category/${category}`);
-        setProducts(response.data);
-        setFilteredProducts(response.data); // Initialize filteredProducts with all products
+        const sortedProducts = response.data.sort((a, b) =>
+          a.itemName.localeCompare(b.itemName)
+        );
+        setProducts(sortedProducts);
+        setFilteredProducts(sortedProducts); // Initialize filteredProducts with sorted products
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
   }, [category]);
+
 
   const handleCheckout = async (productId, userId, quantity) => {
     if (!userId) {
@@ -115,7 +119,14 @@ const CategoryComponent = ({ isLoggedIn, user }) => {
           filteredProducts.map((product) => (
             <div className="col-md-4 mb-4" key={product._id}>
               <div className="card h-100">
-                <img src={product.image} className="card-img-top" alt={product.itemName} style={{ objectFit: 'cover', height: '200px' }} />
+                {product.image && (
+                  <img
+                    src={product.image}
+                    className="card-img-top"
+                    alt={product.itemName}
+                    style={{ objectFit: 'cover', height: '200px' }}
+                  />
+                )}
                 <div className="card-body d-flex flex-column">
                   <h5 className="card-title">{product.itemName}</h5>
                   <p className="card-text"><strong>Quantity Available:</strong> {product.quantity}</p>
@@ -174,6 +185,7 @@ const CategoryComponent = ({ isLoggedIn, user }) => {
                 </div>
               </div>
             </div>
+
           ))
         ) : (
           <p>No products found.</p>
