@@ -1,7 +1,7 @@
 const User = require("../models/userSchema");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET_KEY } = process.env;
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 exports.createUser = async (req, res) => {
   const { name, email, password, isAdmin } = req.body;
