@@ -6,7 +6,7 @@ exports.addItem = async (req, res) => {
     const newItem = new Inventory({
       itemName,
       quantity,
-      image,
+      image: image || null,
       description,
       category,
     });

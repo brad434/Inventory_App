@@ -34,7 +34,14 @@ const Account = ({ user }) => {
 
   const handleReturnItem = async (transactionId) => {
     try {
+      console.log("Cart display for cart in account.jsx", cart);
+
       const token = localStorage.getItem('token'); // Retrieve token from localStorage
+
+      console.log("Token From HandleReturnItem - Account.jsx:", token);
+      console.log("this is the transactionId from Account.jsx file: ", transactionId)
+
+
       await axios.post(`http://localhost:5000/transactions/return/${transactionId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}` // Attach token for authentication
@@ -42,6 +49,7 @@ const Account = ({ user }) => {
       });
 
       setCart(prevCart => prevCart.filter(transaction => transaction._id !== transactionId));
+
       setSuccessMessage('Item successfully returned!');
       // setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
@@ -60,6 +68,7 @@ const Account = ({ user }) => {
           <h3 className='text-center'>Welcome, {user.email}</h3>
           <h5 className='text-center'>Your Cart (Checked-Out Items):</h5>
           {error && <Alert variant="danger">{error}</Alert>}
+          {console.log("cart for account page:", cart)}
           {cart.length > 0 ? (
             <ListGroup>
               {cart.map(transaction => (
@@ -67,6 +76,7 @@ const Account = ({ user }) => {
                   <div>
                     <strong>Item:</strong> {transaction.item?.itemName || 'Item not found.'} <br />
                     <strong>Category:</strong> {transaction.item?.category || 'Item not found.'} <br />
+                    <strong>Quantity Taken:</strong> {transaction.item?.quantity || 'Quantity not available'} <br />
                     <strong>Taken At:</strong> {new Date(transaction.takenAt).toLocaleString()}
                   </div>
                   <Button

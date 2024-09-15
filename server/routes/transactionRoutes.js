@@ -12,7 +12,7 @@ const {
 
 router.post("/checkout", authenticateToken, checkoutItem);
 
-router.post("/return/:id", authenticateToken, requireAdmin, returnItem);
+router.post("/return/:id", authenticateToken, returnItem);
 
 router.get("/user/:userId", authenticateToken, getUserTransactions);
 
