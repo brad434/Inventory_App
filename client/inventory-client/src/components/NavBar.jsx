@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 
 const NavBar = ({ isLoggedIn, isAdmin, handleLogout }) => {
   const navigate = useNavigate();
