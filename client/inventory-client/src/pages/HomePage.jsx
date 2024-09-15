@@ -127,11 +127,11 @@ const SearchAppBar = () => {
               variant="outlined"
               color="primary"
               fullWidth
-              startIcon={<DroneIcon />}
-              onClick={() => handleCategoryClick('Drones')}
+              startIcon={<ScienceIcon />}
+              onClick={() => handleCategoryClick('Science')}
               sx={{ height: 60 }}
             >
-              Drones
+              Science
             </Button>
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
@@ -139,11 +139,11 @@ const SearchAppBar = () => {
               variant="outlined"
               color="primary"
               fullWidth
-              startIcon={<ScienceIcon />}
-              onClick={() => handleCategoryClick('Science')}
+              startIcon={<DroneIcon />}
+              onClick={() => handleCategoryClick('Drones')}
               sx={{ height: 60 }}
             >
-              Science
+              Drones
             </Button>
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
