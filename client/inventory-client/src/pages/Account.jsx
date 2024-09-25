@@ -13,7 +13,7 @@ const Account = ({ user }) => {
     const fetchUserTransactions = async () => {
       try {
         const token = localStorage.getItem('token'); // Retrieve token from localStorage
-        const response = await axios.get(`http://localhost:5000/transactions/user/${user.id}`, {
+        const response = await axios.get(`https://inventory-app-server-6r0m.onrender.com/transactions/user/${user.id}`, {
           headers: {
             Authorization: `Bearer ${token}` // Attach token for authentication
           }
@@ -42,7 +42,7 @@ const Account = ({ user }) => {
       console.log("this is the transactionId from Account.jsx file: ", transactionId)
 
 
-      await axios.post(`http://localhost:5000/transactions/return/${transactionId}`, {}, {
+      await axios.post(`https://inventory-app-server-6r0m.onrender.com/transactions/return/${transactionId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}` // Attach token for authentication
         }

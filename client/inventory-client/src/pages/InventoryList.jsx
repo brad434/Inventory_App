@@ -10,7 +10,7 @@ const InventoryList = ({ isLoggedIn, user }) => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/inventory');
+        const response = await axios.get('https://inventory-app-server-6r0m.onrender.com/inventory');
         setItems(response.data);
       } catch (error) {
         console.error('Error fetching inventory items:', error);
@@ -28,7 +28,7 @@ const InventoryList = ({ isLoggedIn, user }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/transactions/checkout', {
+      const response = await axios.post('https://inventory-app-server-6r0m.onrender.com/transactions/checkout', {
         itemId,
         userId,
         quantity,
@@ -82,7 +82,7 @@ const InventoryList = ({ isLoggedIn, user }) => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/inventory/${itemId}`, {
+      await axios.delete(`https://inventory-app-server-6r0m.onrender.com/inventory/${itemId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

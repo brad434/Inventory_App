@@ -37,7 +37,7 @@ const AdminPage = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:5000/users', {
+        const response = await axios.get('https://inventory-app-server-6r0m.onrender.com/users', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -69,7 +69,7 @@ const AdminPage = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/users/create-user',
+      const response = await axios.post('https://inventory-app-server-6r0m.onrender.com/users/create-user',
         {
           name, email, password, isAdmin
         }, {
@@ -120,7 +120,7 @@ const AdminPage = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:5000/users/${editUserId}`,
+        `https://inventory-app-server-6r0m.onrender.com/users/${editUserId}`,
         updatedData,
         {
           headers: {
@@ -164,7 +164,7 @@ const AdminPage = () => {
 
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        await axios.delete(`http://localhost:5000/users/delete/${userId}`, {
+        await axios.delete(`https://inventory-app-server-6r0m.onrender.com/users/delete/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -190,7 +190,7 @@ const AdminPage = () => {
     }
 
     try {
-      const response = await axios.get(`http://localhost:5000/transactions/user/${userId}`, {
+      const response = await axios.get(`https://inventory-app-server-6r0m.onrender.com/transactions/user/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

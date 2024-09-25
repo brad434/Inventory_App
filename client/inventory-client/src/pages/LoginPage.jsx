@@ -45,7 +45,7 @@ export default function SignIn({ setIsLoggedIn, setUser }) {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/users/login', { email, password });
+      const response = await axios.post('https://inventory-app-server-6r0m.onrender.com/users/login', { email, password });
 
       if (response.status === 200) {
         const { token, user } = response.data;

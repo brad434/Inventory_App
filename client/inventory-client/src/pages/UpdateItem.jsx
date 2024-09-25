@@ -9,7 +9,7 @@ const UpdateItem = () => {
 
   useEffect(() => {
     const fetchItem = async () => {
-      const response = await axios.get(`http://localhost:5000/inventory/${id}`);
+      const response = await axios.get(`https://inventory-app-server-6r0m.onrender.com/inventory/${id}`);
       setItem(response.data);
       setQuantity(response.data.quantity);
     };
@@ -19,7 +19,7 @@ const UpdateItem = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/inventory/${id}/update`, { quantity });
+      await axios.put(`https://inventory-app-server-6r0m.onrender.com/inventory/${id}/update`, { quantity });
       alert('Quantity updated successfully!');
     } catch (error) {
       console.error('There was an error updating the quantity:', error);
