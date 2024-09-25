@@ -15,7 +15,7 @@ const CategoryComponent = ({ isLoggedIn, user }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/inventory/category/${category}`);
+        const response = await axios.get(`https://inventory-app-server-6r0m.onrender.com/inventory/category/${category}`);
         const sortedProducts = response.data.sort((a, b) =>
           a.itemName.localeCompare(b.itemName)
         );
@@ -37,7 +37,7 @@ const CategoryComponent = ({ isLoggedIn, user }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/transactions/checkout', {
+      const response = await axios.post('https://inventory-app-server-6r0m.onrender.com/transactions/checkout', {
         itemId: productId,
         userId,
         quantity

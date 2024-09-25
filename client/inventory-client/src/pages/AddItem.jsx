@@ -13,7 +13,7 @@ const AddItem = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/inventory');
+        const response = await axios.get('https://inventory-app-server-6r0m.onrender.com/inventory');
         setItems(response.data);
       } catch (error) {
         console.error('Error fetching items:', error);
@@ -31,7 +31,7 @@ const AddItem = () => {
       const token = localStorage.getItem('token');
 
 
-      const response = await axios.post('http://localhost:5000/inventory/add', newItem, {
+      const response = await axios.post('https://inventory-app-server-6r0m.onrender.com/inventory/add', newItem, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

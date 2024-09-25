@@ -24,7 +24,7 @@ const SearchAppBar = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/inventory'); // Fetch inventory items
+        const response = await axios.get('https://inventory-app-server-6r0m.onrender.com/inventory'); // Fetch inventory items
         setItems(response.data);
       } catch (error) {
         console.error('Error fetching inventory items:', error);
